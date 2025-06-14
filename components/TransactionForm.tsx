@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Category, EXPENSE_CATEGORIES, INCOME_CATEGORIES, Transaction, TransactionType } from '@/types';
 import { generateId } from '@/lib/utils';
 
@@ -20,6 +20,17 @@ const TransactionForm: React.FC<TransactionFormProps> = ({
   const [description, setDescription] = useState(initialValues?.description || '');
   const [date, setDate] = useState(initialValues?.date || new Date().toISOString().slice(0, 10));
   const [category, setCategory] = useState<Category>(initialValues?.category || 'other');
+
+  // Update form values when initialValues change
+  useEffect(() => {
+    if (initialValues) {
+      setType(initialValues.type);
+      setAmount(initialValues.amount.toString());
+      setDescription(initialValues.description);
+      setDate(initialValues.date);
+      setCategory(initialValues.category);
+    }
+  }, [initialValues]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
